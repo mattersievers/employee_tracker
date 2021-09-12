@@ -1,6 +1,4 @@
-DROP DATABASE IF EXISTS department;
-DROP DATABASE IF EXISTS roles;
-DROP DATABASE IF EXISTS employee;
+DROP DATABASE IF EXISTS employees;
 CREATE DATABASE employees;
 USE employees;
 
