@@ -1,4 +1,4 @@
-//const apiRoutes = require('/routes/apiRoutes');
+const apiRoutes = require('./routes/apiRoutes');
 const db = require('./db/connection');
 const express = require('express');
 
@@ -10,7 +10,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 //use api routes
-//app.use('/api',apiRoutes);
+app.use('/api',apiRoutes);
 
 
 app.use((req,res) => {
