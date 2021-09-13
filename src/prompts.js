@@ -5,8 +5,7 @@ const db = require('../db/connection');
 
 class contentManager {
     constructor() {
-        this.viewDepartment = viewDepartment();
-        this.addDepartment = addDepartment();
+       
     }
 
     initialPrompt(){
@@ -24,13 +23,13 @@ class contentManager {
             .then( (selectionChoice) =>{ 
                 switch(selectionChoice) {
                     case 'View All Departments':
-                        return this.viewDepartment();
+                        return console.log('works');
                     case 'View All Roles':
-                        return;
+                        return console.log('works2');
                     case 'View All Employees':
-                        return;
+                        return console.log('works3');
                     case 'Add A Department':
-                        return this.addDepartment();
+                        return console.log('works4');
                     case 'Add A Role':
                         return;
                     case 'Add An Employee':
@@ -47,7 +46,4 @@ class contentManager {
 
 };
 
-
-let currentSession = new contentManager();
-currentSession.initialPrompt();
 module.exports = contentManager;
