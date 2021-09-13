@@ -20,30 +20,63 @@ class contentManager {
                     'Update an Employee Role']
                 }
             ])
-            .then( (selectionChoice) =>{ 
+            .then( ({selectionChoice}) => { 
+                console.log(selectionChoice);
                 switch(selectionChoice) {
                     case 'View All Departments':
-                        return console.log('works');
+                        return this.viewDepartments();
                     case 'View All Roles':
-                        return console.log('works2');
+                        return this.viewRoles();
                     case 'View All Employees':
-                        return console.log('works3');
+                        return this.viewEmployees();
                     case 'Add A Department':
-                        return console.log('works4');
+                        return this.addDepartment();
                     case 'Add A Role':
-                        return;
+                        return this.addRole();
                     case 'Add An Employee':
-                        return;
+                        return this.addEmployee();
                     case 'Update an Employee Role':
-                        return;
+                        return this.updateEmployee();
+                    default:
+                        return console.log('error in selection');   
                 }
-
-            })
+            })         
     }
 
 
+    viewDepartments(){
+        fetch('/api/department', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+        this.initialPrompt();
+    }
 
+    viewRoles() {
+        this.initialPrompt();
+    }
 
+    viewEmployees(){
+        this.initialPrompt();
+    }
+
+    addDepartment(){
+        this.initialPrompt();
+    }
+
+    addRole(){
+        this.initialPrompt();
+    }
+
+    addEmployee(){
+        this.initialPrompt();
+    }
+
+    updateEmployee(){
+        this.initialPrompt();
+    }
 };
 
 module.exports = contentManager;

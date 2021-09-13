@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../../db/connection');
 const cTable =require('console.table');
 
+
 router.get('/department', (req,res) => {
   const sql = `SELECT * FROM department`;
 
