@@ -45,7 +45,10 @@ class contentManager {
 
 
     viewDepartments(){
-        const sql = `SELECT * FROM department`;
+        const sql = `SELECT
+                    department.name AS Department_Name,
+                    department.id AS Department_ID
+                    FROM department`;
 
         db.promise().query(sql)
         .then( ([rows, fields]) => {
@@ -58,7 +61,14 @@ class contentManager {
     }
 
     viewRoles() { 
-        const sql = `SELECT * FROM roles`;
+        const sql = `SELECT
+                    roles.title AS Job_Title, 
+                    roles.id AS Role_ID,
+                    department.name AS Department_Name,
+                    roles.salary AS Salary
+                    FROM roles
+                    JOIN department
+                    ON roles.department_id = department.id`;
 
         db.promise().query(sql)
         .then( ([rows, fields]) => {
@@ -72,7 +82,19 @@ class contentManager {
     }
 
     viewEmployees(){
-        const sql = `SELECT * FROM employee`;
+        const sql = `SELECT
+                    employee.id AS Employee_ID,
+                    employee.first_name AS First_Name,
+                    employee.last_name AS Last_Name,
+                    roles.title AS Job_Title,
+                    department.name AS Department,
+                    roles.salary AS Salary,
+                    employee.first_name AND employee.last_name AS Manager
+                    FROM employee
+                    JOIN roles
+                    ON employee.role_id = roles.id
+                    JOIN department
+                    ON employee.manager_id = department.id`;
 
         db.promise().query(sql)
         .then( ([rows, fields]) => {
