@@ -1,16 +1,12 @@
-const contentManager = require('./src/prompts');
-const apiRoutes = require('./routes/apiRoutes');
 const db = require('./db/connection');
 const express = require('express'); 
 const PORT = process.env.PORT || 3001;
 const app = express();
+const contentManager = require('./src/prompts');
 
 //express middleware
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-
-//use api routes
-app.use('/api',apiRoutes);
 
 app.use((req,res) => {
     res.status(404).end();

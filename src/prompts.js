@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
-const express = require('express');
-const router = express.Router();
 const db = require('../db/connection');
+const cTable =require('console.table');
+
 
 class contentManager {
     constructor() {
@@ -45,21 +45,43 @@ class contentManager {
 
 
     viewDepartments(){
-        fetch('/api/department', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-        this.initialPrompt();
+        const sql = `SELECT * FROM department`;
+
+        db.promise().query(sql)
+        .then( ([rows, fields]) => {
+            console.log('');
+            console.table(rows);
+        })
+        .catch(err => console.log(err))
+        .then( () =>
+        this.initialPrompt())  
     }
 
-    viewRoles() {
-        this.initialPrompt();
+    viewRoles() { 
+        const sql = `SELECT * FROM roles`;
+
+        db.promise().query(sql)
+        .then( ([rows, fields]) => {
+            console.log('');
+            console.table(rows);
+        })
+        .catch(err => console.log(err))
+        .then( () =>
+        this.initialPrompt())  
+            
     }
 
     viewEmployees(){
-        this.initialPrompt();
+        const sql = `SELECT * FROM employee`;
+
+        db.promise().query(sql)
+        .then( ([rows, fields]) => {
+            console.log('');
+            console.table(rows);
+        })
+        .catch(err => console.log(err))
+        .then( () =>
+        this.initialPrompt())  
     }
 
     addDepartment(){
