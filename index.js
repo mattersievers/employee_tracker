@@ -4,8 +4,8 @@ const cTable =require('console.table');
 const viewDepartmentsQuery = require('./src/viewDepartments');
 const viewRolesQuery = require('./src/viewRoles');
 const viewEmployeesQuery = require('./src/viewEmployees');
-
-
+const addDepartmentQuery = require('./src/addDepartment');
+const addRoleQuery = require('./src/addRole');
 
 class contentManager {
     constructor() {
@@ -59,15 +59,82 @@ class contentManager {
 
     viewEmployees(){
         viewEmployeesQuery().then( (res) =>
-        this.initialPrompt())  
+        this.initialPrompt()) 
+            
     }
 
     addDepartment(){
-        this.initialPrompt();
+        inquirer
+            .prompt([
+                {
+                    type:'text',
+                    name: 'departmentName',
+                    message: 'What is the name of the department you would like to add?',
+                    validate: nameInput => {
+                        if (nameInput) {
+                            return true;    
+                        } else{
+                            console.log("Please enter a department name!");
+                            return false;
+                        }
+                    }                  
+                }
+            ])
+            .then( ({departmentName}) => 
+                addDepartmentQuery(departmentName)
+            )
+            .then((res) => 
+                viewDepartmentsQuery()
+            )
+            .then( (res) =>
+            this.initialPrompt())
     }
 
     addRole(){
-        this.initialPrompt();
+        inquirer
+        .prompt([
+            {
+                type:'text',
+                name: 'roleName',
+                message: 'What is the name of the role you would like to add?',
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;    
+                    } else{
+                        console.log("Please enter a name for the role you would like to add!");
+                        return false;
+                    }
+                }                  
+            },
+            {
+                type:'list',
+                name: 'roleDepartment',
+                message: 'What department will the role be located in?',
+                choices:[]                  
+            },
+            {
+                type:'text',
+                name: 'roleSalary',
+                message: 'What is the salary for the role you would like to add?',
+                validate: salaryInput => {
+                    if (salaryInput) {
+                        return true;    
+                    } else{
+                        console.log("Please enter a salary for the role you would like to add!");
+                        return false;
+                    }
+                }                  
+            }
+
+        ])
+        .then( ({roleName,roleSalary,roleDepartment}) => 
+            addRoleQuery(roleName,roleSalary,roleDepartment)
+        )
+        .then((res) => 
+            viewRolesQuery()
+        )
+        .then( (res) =>
+        this.initialPrompt())
     }
 
     addEmployee(){

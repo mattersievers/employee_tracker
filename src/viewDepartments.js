@@ -12,4 +12,4 @@ module.exports = function viewDepartmentsQuery() {
     console.table(rows);
     })
     .catch(err => console.log(err))
-};
+}

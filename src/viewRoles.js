@@ -17,4 +17,4 @@ module.exports = function viewRolesQuery () {
     })
     .catch(err => console.log(err))
 
-};
+}
