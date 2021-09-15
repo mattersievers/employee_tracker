@@ -6,6 +6,7 @@ const viewRolesQuery = require('./src/viewRoles');
 const viewEmployeesQuery = require('./src/viewEmployees');
 const addDepartmentQuery = require('./src/addDepartment');
 const addRoleQuery = require('./src/addRole');
+const getDepartmentQuery = require('./src/getDepartment');
 
 class contentManager {
     constructor() {
@@ -91,6 +92,8 @@ class contentManager {
     }
 
     addRole(){
+        const deptChoices = getDepartmentQuery();
+
         inquirer
         .prompt([
             {
@@ -110,7 +113,7 @@ class contentManager {
                 type:'list',
                 name: 'roleDepartment',
                 message: 'What department will the role be located in?',
-                choices:[]                  
+                choices: deptChoices                  
             },
             {
                 type:'text',

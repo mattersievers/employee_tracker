@@ -1,7 +1,7 @@
 const db = require('../db/connection');
 
 module.exports = function addRoleQuery(name, salary, department) {
-    const sql = `INSERT INTO roles(name, salary, department)
+    const sql = `INSERT INTO roles(name, salary, department.id)
                     VALUES (?,?,?)`;
     const params = [name,salary,department];
 
