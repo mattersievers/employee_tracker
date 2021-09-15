@@ -92,53 +92,57 @@ class contentManager {
     }
 
     addRole(){
-        const deptChoices = getDepartmentQuery();
+        let deptNames = getDepartmentQuery();
+        console.log(deptNames);
 
-        inquirer
-        .prompt([
-            {
-                type:'text',
-                name: 'roleName',
-                message: 'What is the name of the role you would like to add?',
-                validate: nameInput => {
-                    if (nameInput) {
-                        return true;    
-                    } else{
-                        console.log("Please enter a name for the role you would like to add!");
-                        return false;
+            inquirer
+                .prompt([
+                    {
+                        type:'text',
+                        name: 'roleName',
+                        message: 'What is the name of the role you would like to add?',
+                        validate: nameInput => {
+                            if (nameInput) {
+                                return true;    
+                            } else{
+                                console.log("Please enter a name for the role you would like to add!");
+                                return false;
+                            }
+                        }                  
+                    },
+                    {
+                        type:'list',
+                        name: 'roleDepartment',
+                        message: 'What department will the role be located in?',
+                        choices: [deptNames]                
+                    },
+                    {
+                        type:'text',
+                        name: 'roleSalary',
+                        message: 'What is the salary for the role you would like to add?',
+                        validate: salaryInput => {
+                            if (salaryInput) {
+                                return true;    
+                            } else{
+                                console.log("Please enter a salary for the role you would like to add!");
+                                return false;
+                            }
+                        }                  
                     }
-                }                  
-            },
-            {
-                type:'list',
-                name: 'roleDepartment',
-                message: 'What department will the role be located in?',
-                choices: deptChoices                  
-            },
-            {
-                type:'text',
-                name: 'roleSalary',
-                message: 'What is the salary for the role you would like to add?',
-                validate: salaryInput => {
-                    if (salaryInput) {
-                        return true;    
-                    } else{
-                        console.log("Please enter a salary for the role you would like to add!");
-                        return false;
-                    }
-                }                  
-            }
 
-        ])
-        .then( ({roleName,roleSalary,roleDepartment}) => 
-            addRoleQuery(roleName,roleSalary,roleDepartment)
-        )
-        .then((res) => 
-            viewRolesQuery()
-        )
-        .then( (res) =>
-        this.initialPrompt())
-    }
+                ])
+            
+            .then( ({roleName,roleSalary,roleDepartment}) => 
+                addRoleQuery(roleName,roleSalary,roleDepartment)
+            )
+            .then((res) => 
+                viewRolesQuery()
+            )
+            .then( (res) =>
+            this.initialPrompt())    
+        }
+
+
 
     addEmployee(){
         this.initialPrompt();
