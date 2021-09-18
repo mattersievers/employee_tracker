@@ -14,6 +14,10 @@ const getEmployeeQuery = require('./src/getEmployee');
 const addEmployeeQuery = require('./src/addEmployee');
 const editEmployeeRoleQuery = require('./src/editEmployeeRole');
 const editEmployeeManagerQuery = require('./src/editEmployeeManager');
+const deleteDepartmentQuery = require('./src/deleteDepartment');
+const deleteRoleQuery = require('./src/deleteRole');
+const deleteEmployeeQuery = require('./src/deleteEmployee');
+
 
 
 class contentManager {
@@ -117,12 +121,12 @@ class contentManager {
                 {
                     type:'list',
                     name: 'deptName',
-                    message: 'Who is the manager you would like to see a list for?',
+                    message: 'What is the department you would like to see a list for?',
                     choices: deptNames                 
                 }
             ])
             .then( ({deptName}) => {
-                viewEmployeeByManagerQuery(parseInt(deptName))
+                viewEmployeeByDeptQuery(parseInt(deptName))
             })
             .then ( (res) => 
                 currentSession.initialPrompt())    
@@ -327,19 +331,78 @@ class contentManager {
     }
 
 
-    deleteDept(){
-        currentSession.initialPrompt();
+    deleteDept(){    
+        async function getDeptAndDelete(){
+            const deptNames = await getDepartmentQuery();
+            
+            inquirer
+            .prompt([
+                {
+                    type:'list',
+                    name: 'deptName',
+                    message: 'What is the department you would like to delete?',
+                    choices: deptNames                 
+                }
+            ])
+            .then( ({deptName}) => {
+                deleteDepartmentQuery(parseInt(deptName))
+            })
+            .then ( (res) => 
+                viewDepartmentsQuery())
+            .then ( (res) => 
+                currentSession.initialPrompt())    
+        }
+        getDeptAndDelete();    
     }
 
     deleteRole(){
-        currentSession.initialPrompt();
+        async function getRoleAndDelete(){
+            const roleNames = await getRoleQuery();
+            
+            inquirer
+            .prompt([
+                {
+                    type:'list',
+                    name: 'roleName',
+                    message: 'What is the role you would like to delete?',
+                    choices: roleNames                 
+                }
+            ])
+            .then( ({roleName}) => {
+                deleteRoleQuery(parseInt(roleName))
+            })
+            .then ( (res) => 
+                viewRolesQuery())
+            .then ( (res) => 
+                currentSession.initialPrompt())    
+        }
+        getRoleAndDelete();
     }
 
     deleteEmp(){
-        currentSession.initialPrompt();
+        async function getEmpAndDelete(){
+            const empNames = await getEmployeeQuery();
+            
+            inquirer
+            .prompt([
+                {
+                    type:'list',
+                    name: 'empName',
+                    message: 'What is the name of the employee you would like to delete?',
+                    choices: empNames                 
+                }
+            ])
+            .then( ({empName}) => {
+                deleteEmployeeQuery(parseInt(empName))
+            })
+            .then ( (res) => 
+                viewEmployeesQuery())
+            .then ( (res) => 
+                currentSession.initialPrompt())    
+        }
+        getEmpAndDelete();
     }
 }
-
 
 let currentSession = new contentManager();
 currentSession.initialPrompt();
