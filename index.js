@@ -92,9 +92,11 @@ class contentManager {
     }
 
     addRole(){
-        let deptNames = getDepartmentQuery();
-        console.log(deptNames);
-
+        async function getName(){
+            const deptNames = await getDepartmentQuery();
+            console.log(deptNames);
+            
+        
             inquirer
                 .prompt([
                     {
@@ -114,7 +116,7 @@ class contentManager {
                         type:'list',
                         name: 'roleDepartment',
                         message: 'What department will the role be located in?',
-                        choices: [deptNames]                
+                        choices: deptNames                
                     },
                     {
                         type:'text',
@@ -131,7 +133,6 @@ class contentManager {
                     }
 
                 ])
-            
             .then( ({roleName,roleSalary,roleDepartment}) => 
                 addRoleQuery(roleName,roleSalary,roleDepartment)
             )
@@ -139,8 +140,10 @@ class contentManager {
                 viewRolesQuery()
             )
             .then( (res) =>
-            this.initialPrompt())    
-        }
+            this.initialPrompt())   
+            }
+            getName();     
+    };
 
 
 
