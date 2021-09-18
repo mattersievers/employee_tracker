@@ -11,7 +11,6 @@ module.exports = function getDepartmentQuery() {
         db.promise().query(sql)
         .then( ([rows, fields]) => {
             for (let i=0; i < rows.length; i++) {
-                console.log(rows);
                 let current = rows[i].id +". "+ rows[i].name;
                 names.push(current);
             }
