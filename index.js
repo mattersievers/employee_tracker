@@ -11,6 +11,8 @@ const getRoleQuery = require('./src/getRole');
 const getEmployeeQuery = require('./src/getEmployee');
 const addEmployeeQuery = require('./src/addEmployee');
 const editEmployeeRoleQuery = require('./src/editEmployeeRole');
+const editEmployeeManagerQuery = require('./src/editEmployeeManager');
+
 
 class contentManager {
     constructor() {
@@ -25,7 +27,8 @@ class contentManager {
                     message: 'What would you like to do?',
                     choices: ['View All Departments','View All Roles','View All Employees', 'View Employee by Manager',
                     'Add A Department','Add A Role', 'Add An Employee',
-                    'Update an Employee Role', 'Update an Employee manager', 'Delete a Department', 'Delete a Role', 'Delete an Employee']
+                    'Update an Employee Role', 'Update an Employee Manager',
+                    'Delete a Department', 'Delete a Role', 'Delete an Employee']
                 }
             ])
             .then( ({selectionChoice}) => { 
@@ -47,7 +50,7 @@ class contentManager {
                         return this.addEmployee();
                     case 'Update an Employee Role':
                         return this.updateEmployeeRole();
-                    case 'Update an Employee manager':
+                    case 'Update an Employee Manager':
                         return this.updateEmployeeManager(); 
                     case 'Delete a Department':
                         return this.deleteDept();    
@@ -249,6 +252,45 @@ class contentManager {
     }
 
     updateEmployeeManager(){
+            async function getInfoAndEdit(){
+                const empNames = await getEmployeeQuery();
+                
+                inquirer
+                .prompt([
+                    {
+                        type:'list',
+                        name: 'employeeEdit',
+                        message: 'Who is the employee you would like to change manager for?',
+                        choices: empNames                 
+                    },
+                    {
+                        type:'list',
+                        name: 'newManager',
+                        message: 'Who will manage the employee?',
+                        choices: empNames                 
+                    }
+                ])
+                .then( ({employeeEdit, newManager}) => {
+                    editEmployeeManagerQuery(parseInt(employeeEdit), parseInt(newManager))
+                })
+                .then( (res) => 
+                   viewEmployeesQuery())
+                .then ( (res) => 
+                    currentSession.initialPrompt())    
+            }
+            getInfoAndEdit();    
+    }
+
+
+    deleteDept(){
+        currentSession.initialPrompt();
+    }
+
+    deleteRole(){
+        currentSession.initialPrompt();
+    }
+
+    deleteEmp(){
         currentSession.initialPrompt();
     }
 }
