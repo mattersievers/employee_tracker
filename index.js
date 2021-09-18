@@ -10,6 +10,7 @@ const getDepartmentQuery = require('./src/getDepartment');
 const getRoleQuery = require('./src/getRole');
 const getEmployeeQuery = require('./src/getEmployee');
 const addEmployeeQuery = require('./src/addEmployee');
+const editEmployeeRoleQuery = require('./src/editEmployeeRole');
 
 class contentManager {
     constructor() {
@@ -22,9 +23,9 @@ class contentManager {
                     type:'list',
                     name: 'selectionChoice',
                     message: 'What would you like to do?',
-                    choices: ['View All Departments','View All Roles','View All Employees',
+                    choices: ['View All Departments','View All Roles','View All Employees', 'View Employee by Manager',
                     'Add A Department','Add A Role', 'Add An Employee',
-                    'Update an Employee Role']
+                    'Update an Employee Role', 'Update an Employee manager', 'Delete a Department', 'Delete a Role', 'Delete an Employee']
                 }
             ])
             .then( ({selectionChoice}) => { 
@@ -36,6 +37,8 @@ class contentManager {
                         return this.viewRoles();
                     case 'View All Employees':
                         return this.viewEmployees();
+                    case 'View Employee by Manager':
+                        return this.viewEmpByManager();
                     case 'Add A Department':
                         return this.addDepartment();
                     case 'Add A Role':
@@ -43,7 +46,15 @@ class contentManager {
                     case 'Add An Employee':
                         return this.addEmployee();
                     case 'Update an Employee Role':
-                        return this.updateEmployee();
+                        return this.updateEmployeeRole();
+                    case 'Update an Employee manager':
+                        return this.updateEmployeeManager(); 
+                    case 'Delete a Department':
+                        return this.deleteDept();    
+                    case 'Delete a Role':
+                        return this.deleteRole();    
+                    case 'Delete an Employee':
+                        return this.deleteEmp();    
                     default:
                         return console.log('error in selection');   
                 }
@@ -67,6 +78,10 @@ class contentManager {
             
     }
 
+    viewEmpByManager(){
+        currentSession.initialPrompt();
+    }
+    
     addDepartment(){
         inquirer
             .prompt([
@@ -202,10 +217,42 @@ class contentManager {
     getInfoAndCreate();
     }
 
-    updateEmployee(){
+    updateEmployeeRole(){
+        async function getInfoAndEdit(){
+            const empNames = await getEmployeeQuery();
+            const roleNames = await getRoleQuery();
+
+            inquirer
+            .prompt([
+                {
+                    type:'list',
+                    name: 'employeeEdit',
+                    message: 'Who is the employee you would like to edit roles for?',
+                    choices: empNames                 
+                },
+                {
+                    type:'list',
+                    name: 'newRole',
+                    message: 'What is the role you would like to assign the employee?',
+                    choices: roleNames                 
+                }
+            ])
+            .then( ({employeeEdit, newRole}) => {
+                editEmployeeRoleQuery(parseInt(employeeEdit), parseInt(newRole))
+            })
+            .then( (res) => 
+               viewEmployeesQuery())
+            .then ( (res) => 
+                currentSession.initialPrompt())    
+        }
+        getInfoAndEdit();    
+    }
+
+    updateEmployeeManager(){
         currentSession.initialPrompt();
     }
-};
+}
+
 
 let currentSession = new contentManager();
 currentSession.initialPrompt();
