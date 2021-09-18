@@ -94,8 +94,6 @@ class contentManager {
     addRole(){
         async function getName(){
             const deptNames = await getDepartmentQuery();
-            console.log(deptNames);
-            
         
             inquirer
                 .prompt([
@@ -134,15 +132,15 @@ class contentManager {
 
                 ])
             .then( ({roleName,roleSalary,roleDepartment}) => 
-                addRoleQuery(roleName,roleSalary,roleDepartment)
+                addRoleQuery(roleName,parseFloat(roleSalary),parseInt(roleDepartment))
             )
             .then((res) => 
                 viewRolesQuery()
             )
             .then( (res) =>
-            this.initialPrompt())   
-            }
-            getName();     
+            currentSession.initialPrompt())
+        }
+        getName();     
     };
 
 
