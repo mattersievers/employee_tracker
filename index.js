@@ -4,6 +4,8 @@ const cTable =require('console.table');
 const viewDepartmentsQuery = require('./src/viewDepartments');
 const viewRolesQuery = require('./src/viewRoles');
 const viewEmployeesQuery = require('./src/viewEmployees');
+const viewEmployeeByDeptQuery = require('./src/viewEmployeeByDept');
+const viewEmployeeByManagerQuery = require('./src/viewEmployeeByManager');
 const addDepartmentQuery = require('./src/addDepartment');
 const addRoleQuery = require('./src/addRole');
 const getDepartmentQuery = require('./src/getDepartment');
@@ -25,7 +27,7 @@ class contentManager {
                     type:'list',
                     name: 'selectionChoice',
                     message: 'What would you like to do?',
-                    choices: ['View All Departments','View All Roles','View All Employees', 'View Employee by Manager',
+                    choices: ['View All Departments','View All Roles','View All Employees', 'View Employee by Manager', 'View Employee by Department',
                     'Add A Department','Add A Role', 'Add An Employee',
                     'Update an Employee Role', 'Update an Employee Manager',
                     'Delete a Department', 'Delete a Role', 'Delete an Employee']
@@ -42,6 +44,8 @@ class contentManager {
                         return this.viewEmployees();
                     case 'View Employee by Manager':
                         return this.viewEmpByManager();
+                    case 'View Employee by Department':
+                        return this.viewEmpByDepartment();
                     case 'Add A Department':
                         return this.addDepartment();
                     case 'Add A Role':
@@ -82,9 +86,50 @@ class contentManager {
     }
 
     viewEmpByManager(){
-        currentSession.initialPrompt();
-    }
+        async function getManagerAndShow(){
+            const empNames = await getEmployeeQuery();
+            
+            inquirer
+            .prompt([
+                {
+                    type:'list',
+                    name: 'managerName',
+                    message: 'Who is the manager you would like to see a list for?',
+                    choices: empNames                 
+                }
+            ])
+            .then( ({managerName}) => {
+                viewEmployeeByManagerQuery(parseInt(managerName))
+            })
+            .then ( (res) => 
+                currentSession.initialPrompt())    
+        }
+        getManagerAndShow();    
+}       
     
+
+    viewEmpByDepartment(){
+        async function getDeptAndShow(){
+            const deptNames = await getDepartmentQuery();
+            
+            inquirer
+            .prompt([
+                {
+                    type:'list',
+                    name: 'deptName',
+                    message: 'Who is the manager you would like to see a list for?',
+                    choices: deptNames                 
+                }
+            ])
+            .then( ({deptName}) => {
+                viewEmployeeByManagerQuery(parseInt(deptName))
+            })
+            .then ( (res) => 
+                currentSession.initialPrompt())    
+        }
+        getDeptAndShow();
+    }
+
     addDepartment(){
         inquirer
             .prompt([
