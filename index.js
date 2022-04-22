@@ -1,6 +1,4 @@
 const inquirer = require('inquirer');
-const db = require('./db/connection');
-const cTable =require('console.table');
 const viewDepartmentsQuery = require('./src/viewDepartments');
 const viewRolesQuery = require('./src/viewRoles');
 const viewEmployeesQuery = require('./src/viewEmployees');
